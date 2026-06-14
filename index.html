@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>홍길동 | Frontend Developer Portfolio</title>
+  <meta name="description" content="홍길동의 개인 프로필 및 포트폴리오 웹사이트입니다." />
+
+  <!-- 다크모드 깜빡임 방지: localStorage에 'light'가 저장된 경우가 아니면 dark가 기본값 -->
+  <script>
+    (function () {
+      var stored = localStorage.getItem('theme');
+      var useDark = stored === 'light' ? false : true;
+      document.documentElement.classList.toggle('dark', useDark);
+    })();
+  </script>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body
+  class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-sans antialiased transition-colors duration-300"
+>
+  <!-- ============ Header / Nav ============ -->
+  <header
+    class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300"
+  >
+    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- 로고 / 이름 -->
+      <a href="#home" class="text-xl font-bold text-slate-900 dark:text-white">
+        <!-- TODO: 이름/로고로 변경 -->
+        홍길동
+      </a>
+
+      <!-- 데스크톱 네비게이션 -->
+      <div class="hidden md:flex items-center gap-8">
+        <a
+          href="#about"
+          class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >About</a
+        >
+        <a
+          href="#skills"
+          class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >Skills</a
+        >
+        <a
+          href="#projects"
+          class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >Projects</a
+        >
+        <a
+          href="#contact"
+          class="text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >Contact</a
+        >
+      </div>
+
+      <!-- 다크모드 토글 + 모바일 메뉴 버튼 -->
+      <div class="flex items-center gap-2">
+        <button
+          id="theme-toggle"
+          type="button"
+          aria-label="다크/라이트 모드 전환"
+          class="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+        >
+          <!-- sun icon: 다크모드일 때 표시 (클릭하면 라이트로) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 hidden dark:block"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+            />
+          </svg>
+          <!-- moon icon: 라이트모드일 때 표시 (클릭하면 다크로) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 block dark:hidden"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+            />
+          </svg>
+        </button>
+
+        <!-- 모바일 메뉴 토글 -->
+        <button
+          id="menu-toggle"
+          type="button"
+          aria-label="메뉴 열기"
+          aria-expanded="false"
+          class="p-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors md:hidden"
+        >
+          <svg
+            id="menu-icon-open"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+          </svg>
+          <svg
+            id="menu-icon-close"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 hidden"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- 모바일 메뉴 패널 -->
+    <div
+      id="mobile-menu"
+      class="hidden md:hidden flex flex-col gap-1 px-6 pb-4 border-t border-slate-200 dark:border-slate-800"
+    >
+      <a
+        href="#about"
+        class="block py-2 text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        >About</a
+      >
+      <a
+        href="#skills"
+        class="block py-2 text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        >Skills</a
+      >
+      <a
+        href="#projects"
+        class="block py-2 text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        >Projects</a
+      >
+      <a
+        href="#contact"
+        class="block py-2 text-base font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        >Contact</a
+      >
+    </div>
+  </header>
+
+  <!-- ============ Hero ============ -->
+  <section id="home" class="relative min-h-screen flex items-center overflow-hidden px-6 pt-24 pb-16">
+    <!-- 배경 블러 액센트 -->
+    <div class="pointer-events-none absolute top-1/4 -right-20 w-80 h-80 sm:w-[28rem] sm:h-[28rem] bg-blue-400 dark:bg-blue-600 rounded-full blur-3xl opacity-20"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- 좌측: 텍스트 -->
+      <div class="order-2 lg:order-1 text-center lg:text-left">
+        <p class="text-blue-600 dark:text-blue-400 font-medium mb-4">
+          <!-- TODO: 인사말 변경 -->
+          안녕하세요, 저는
+        </p>
+        <h1 class="text-6xl sm:text-7xl md:text-8xl font-extralight tracking-tight text-slate-900 dark:text-white mb-2">
+          <!-- TODO: 이름 변경 -->
+          홍길동
+        </h1>
+        <h2 class="text-xl sm:text-2xl font-light text-slate-500 dark:text-slate-400 mb-6">
+          <!-- TODO: 직업/역할 변경 -->
+          Frontend Developer
+        </h2>
+        <p class="max-w-md mx-auto lg:mx-0 text-base sm:text-lg text-slate-600 dark:text-slate-300 mb-10">
+          <!-- TODO: 자기소개 변경 (2~3줄) -->
+          사용자 경험을 최우선으로 생각하는 프론트엔드 개발자입니다. 깔끔한 코드와 직관적인 UI/UX를 만드는
+          것을 좋아하며, 새로운 기술을 배우고 적용하는 데 즐거움을 느낍니다.
+        </p>
+
+        <!-- 통계 -->
+        <div class="flex justify-center lg:justify-start gap-10 mb-10">
+          <div>
+            <!-- TODO: 통계 수치 변경 -->
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">10+</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">완료 프로젝트</p>
+          </div>
+          <div>
+            <!-- TODO: 통계 수치 변경 -->
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">3년+</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">경력</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+          <a
+            href="#contact"
+            class="px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30"
+          >
+            Contact Me
+          </a>
+          <a
+            href="#projects"
+            class="px-6 py-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            View Projects
+          </a>
+        </div>
+      </div>
+
+      <!-- 우측: 프로필 사진 -->
+      <div class="order-1 lg:order-2">
+        <div class="relative mx-auto max-w-sm lg:max-w-none aspect-[4/5] rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-2xl">
+          <!-- TODO: 실제 프로필 사진으로 교체 (예: img/profile.jpg). 현재는 저작권 프리 placeholder(pravatar) 사용 -->
+          <img
+            src="https://i.pravatar.cc/600?img=12"
+            alt="프로필 사진"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- 스크롤 인디케이터 -->
+    <a
+      href="#about"
+      class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-sm text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors animate-bounce"
+    >
+      Scroll down
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25 12 15.75 4.5 8.25" />
+      </svg>
+    </a>
+  </section>
+
+  <!-- ============ About ============ -->
+  <section id="about" class="fade-in-section bg-slate-50 dark:bg-slate-800/60 scroll-mt-16">
+    <div class="max-w-6xl mx-auto px-6 py-20 md:py-28">
+      <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2">About</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">소개</h2>
+      <p class="max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+        <!-- TODO: 자기소개 본문 변경 -->
+        3년차 프론트엔드 개발자로서 React와 TypeScript를 활용한 웹 애플리케이션 개발에 강점이 있습니다.
+        사용자 중심의 인터페이스 설계와 성능 최적화에 관심이 많으며, 새로운 기술을 배우고 적용하는 것을
+        즐깁니다. 팀과의 협업을 통해 더 나은 결과를 만들어내는 것을 목표로 합니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Skills ============ -->
+  <section id="skills" class="fade-in-section max-w-6xl mx-auto px-6 py-20 md:py-28 scroll-mt-16">
+    <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2">Skills</p>
+    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-10">기술 스택</h2>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <!-- TODO: 보유 기술 스택에 맞게 카드 추가/삭제 -->
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">HTML5</span>
+      </div>
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">CSS3</span>
+      </div>
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">JavaScript</span>
+      </div>
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">React</span>
+      </div>
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Tailwind CSS</span>
+      </div>
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Git</span>
+      </div>
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Figma</span>
+      </div>
+      <div class="flex flex-col items-center gap-3 p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" class="w-full h-full object-contain" loading="lazy" />
+        </div>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Next.js</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Projects ============ -->
+  <section id="projects" class="fade-in-section max-w-6xl mx-auto px-6 py-20 md:py-28 scroll-mt-16">
+    <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2">Projects</p>
+    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-10">프로젝트</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Project 1 -->
+      <article class="flex flex-col rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+        <img src="https://placehold.co/600x400/1e293b/60a5fa?text=Project+1" alt="프로젝트 1 미리보기" class="w-full h-48 object-cover" loading="lazy" />
+        <div class="flex flex-col flex-1 p-6">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+            <!-- TODO: 프로젝트명 변경 -->
+            프로젝트 이름 1
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mb-4 flex-1">
+            <!-- TODO: 프로젝트 설명 변경 -->
+            사용자 인증, 실시간 데이터 동기화, 반응형 UI를 포함한 풀스택 웹 애플리케이션입니다.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">React</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">Tailwind CSS</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">Node.js</span>
+          </div>
+          <div class="flex gap-4 text-sm font-semibold">
+            <!-- TODO: 데모/깃허브 링크 변경 -->
+            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Live Demo →</a>
+            <a href="#" class="text-slate-600 dark:text-slate-300 hover:underline">GitHub →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="flex flex-col rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+        <img src="https://placehold.co/600x400/1e3a8a/bfdbfe?text=Project+2" alt="프로젝트 2 미리보기" class="w-full h-48 object-cover" loading="lazy" />
+        <div class="flex flex-col flex-1 p-6">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+            <!-- TODO: 프로젝트명 변경 -->
+            프로젝트 이름 2
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mb-4 flex-1">
+            <!-- TODO: 프로젝트 설명 변경 -->
+            할 일을 관리하고 팀원과 일정을 공유할 수 있는 협업용 대시보드 애플리케이션입니다.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">Next.js</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">TypeScript</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">Tailwind CSS</span>
+          </div>
+          <div class="flex gap-4 text-sm font-semibold">
+            <!-- TODO: 데모/깃허브 링크 변경 -->
+            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Live Demo →</a>
+            <a href="#" class="text-slate-600 dark:text-slate-300 hover:underline">GitHub →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="flex flex-col rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+        <img src="https://placehold.co/600x400/0c4a6e/7dd3fc?text=Project+3" alt="프로젝트 3 미리보기" class="w-full h-48 object-cover" loading="lazy" />
+        <div class="flex flex-col flex-1 p-6">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+            <!-- TODO: 프로젝트명 변경 -->
+            프로젝트 이름 3
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mb-4 flex-1">
+            <!-- TODO: 프로젝트 설명 변경 -->
+            위치 기반 정보를 지도에 시각화하여 보여주는 모바일 친화형 웹 서비스입니다.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">JavaScript</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">API</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">CSS3</span>
+          </div>
+          <div class="flex gap-4 text-sm font-semibold">
+            <!-- TODO: 데모/깃허브 링크 변경 -->
+            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Live Demo →</a>
+            <a href="#" class="text-slate-600 dark:text-slate-300 hover:underline">GitHub →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ Contact ============ -->
+  <section id="contact" class="fade-in-section max-w-6xl mx-auto px-6 py-20 md:py-28 scroll-mt-16 text-center">
+    <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2">Contact</p>
+    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">연락하기</h2>
+    <p class="max-w-xl mx-auto text-slate-600 dark:text-slate-300 mb-8">
+      새로운 기회나 협업 제안은 언제든 환영합니다. 아래 채널로 편하게 연락주세요.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <!-- TODO: 이메일 주소 변경 -->
+      <a
+        href="mailto:example@email.com"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+        </svg>
+        Email Me
+      </a>
+      <!-- TODO: GitHub 링크 변경 -->
+      <a
+        href="https://github.com/yourusername"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" clip-rule="evenodd" />
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 py-8 px-6 text-center text-sm text-slate-500 dark:text-slate-400">
+    <div class="flex justify-center gap-6 mb-4">
+      <!-- TODO: GitHub 링크 변경 -->
+      <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" clip-rule="evenodd" />
+        </svg>
+      </a>
+      <!-- TODO: 이메일 주소 변경 -->
+      <a href="mailto:example@email.com" aria-label="Email" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+        </svg>
+      </a>
+    </div>
+    <p>
+      &copy; <span id="current-year">2026</span>
+      <!-- TODO: 이름 변경 -->
+      홍길동. All rights reserved.
+    </p>
+  </footer>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>
